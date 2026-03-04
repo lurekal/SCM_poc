@@ -3,10 +3,11 @@
  * 각 섹션을 독립적으로 조회하여 하나가 실패해도 나머지는 반환
  */
 import { NextResponse } from 'next/server';
+import oracledb from 'oracledb';
 import { query } from '@/app/lib/db';
 
 /* 개별 쿼리를 안전하게 실행하는 헬퍼 */
-async function safeQuery<T>(sql: string, params?: Record<string, unknown>): Promise<T[] | { error: string }> {
+async function safeQuery<T>(sql: string, params?: oracledb.BindParameters): Promise<T[] | { error: string }> {
   try {
     return await query<T>(sql, params);
   } catch (e) {
