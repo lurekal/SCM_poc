@@ -46,6 +46,7 @@ ENV HOSTNAME="0.0.0.0"
 # Oracle Instant Client에 필요한 시스템 라이브러리 설치
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libaio1 \
+    ca-certificates \
     curl \
     unzip \
     && rm -rf /var/lib/apt/lists/*
