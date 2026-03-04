@@ -1,0 +1,26 @@
+# 의존성 (컨테이너 내에서 새로 설치)
+node_modules
+
+# Next.js 빌드 출력 (컨테이너 내에서 새로 빌드)
+.next
+
+# 버전 관리
+.git
+.gitignore
+
+# 환경변수 파일 (Railway에서 별도 설정)
+.env
+.env.*
+
+# IDE 설정
+.vscode
+.idea
+
+# OS 파일
+Thumbs.db
+.DS_Store
+
+# Docker 자체 파일
+Dockerfile
+docker-compose*.yml
+.dockerignore
