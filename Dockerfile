@@ -13,8 +13,9 @@ FROM node:20-slim AS deps
 WORKDIR /app
 
 # package.json과 lock 파일 복사 후 의존성 설치
+# oracledb 네이티브 바이너리 다운로드를 위해 --ignore-scripts 제거
 COPY package.json package-lock.json* ./
-RUN npm ci --ignore-scripts
+RUN npm ci
 
 # ----------------------------------------------------------
 # 2단계: 빌드 (builder)
@@ -72,6 +73,9 @@ RUN addgroup --system --gid 1001 nodejs \
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# oracledb 네이티브 바이너리 복사 (standalone에 누락될 수 있음)
+COPY --from=builder /app/node_modules/oracledb ./node_modules/oracledb
 
 USER nextjs
 
