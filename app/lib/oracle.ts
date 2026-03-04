@@ -62,7 +62,7 @@ export async function getPool(): Promise<oracledb.Pool> {
       user: process.env.ORACLE_USER,
       password: process.env.ORACLE_PASSWORD,
       connectString: process.env.ORACLE_CONNECTION_STRING,
-      poolMin: Number(process.env.ORACLE_POOL_MIN) || 2,
+      poolMin: Number(process.env.ORACLE_POOL_MIN) || 0,
       poolMax: Number(process.env.ORACLE_POOL_MAX) || 10,
       poolIncrement: 1,
       poolTimeout: 60,         /* 유휴 커넥션 타임아웃 (초) */
