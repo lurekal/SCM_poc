@@ -23,7 +23,7 @@ function initThickMode(): void {
   try {
     /* Oracle Instant Client 경로 설정 */
     /* 기본값: Linux(Docker/Railway) 환경 경로, 로컬 Windows는 환경변수로 오버라이드 */
-    const clientPath = process.env.ORACLE_CLIENT_PATH || '/usr/lib/oracle/21/client64/lib';
+    const clientPath = process.env.ORACLE_CLIENT_PATH || '/opt/oracle/instantclient_21_16';
     oracledb.initOracleClient({ libDir: clientPath });
     thickInitialized = true;
     console.log(`[Oracle] Thick 모드 초기화 완료 (${clientPath})`);

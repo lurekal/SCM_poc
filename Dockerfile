@@ -46,20 +46,22 @@ ENV HOSTNAME="0.0.0.0"
 # Oracle Instant Client에 필요한 시스템 라이브러리 설치
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libaio1 \
-    wget \
-    alien \
+    curl \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # Oracle Instant Client Basic Lite 21.16 (Linux x64) 설치
-# RPM 패키지를 다운로드하여 alien으로 변환 후 설치
-RUN wget -q https://download.oracle.com/otn_software/linux/instantclient/2116000/oracle-instantclient-basiclite-21.16.0.0.0-1.el8.x86_64.rpm \
-    && alien -i oracle-instantclient-basiclite-21.16.0.0.0-1.el8.x86_64.rpm \
-    && rm oracle-instantclient-basiclite-21.16.0.0.0-1.el8.x86_64.rpm \
-    && apt-get purge -y wget alien && apt-get autoremove -y \
+# ZIP 패키지를 다운로드하여 /opt/oracle에 직접 설치
+RUN curl -fsSL -o /tmp/instantclient.zip \
+    https://download.oracle.com/otn_software/linux/instantclient/2116000/instantclient-basiclite-linux.x64-21.16.0.0.0dbru.zip \
+    && mkdir -p /opt/oracle \
+    && unzip /tmp/instantclient.zip -d /opt/oracle \
+    && rm /tmp/instantclient.zip \
+    && apt-get purge -y curl unzip && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Oracle Instant Client 라이브러리 경로를 시스템에 등록
-ENV LD_LIBRARY_PATH=/usr/lib/oracle/21/client64/lib:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_21_16:${LD_LIBRARY_PATH}
 
 # 비루트 사용자로 실행 (보안)
 RUN addgroup --system --gid 1001 nodejs \
